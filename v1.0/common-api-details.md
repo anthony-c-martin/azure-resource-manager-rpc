@@ -60,7 +60,7 @@ When satisfying incoming requests, it is assumed that the following values are s
 
 ## Client Request Timeout ##
 
-Requests proxied to the resource provider are made with a client timeout of 60 seconds. If request take more than 60 seconds please consider using asynchronous request/response pattern.
+Requests proxied to the resource provider are made with a client timeout of 60 seconds. If requests take more than 60 seconds please consider using asynchronous request/response pattern.
 
 The resource provider must respond within that time interval or the client will receive a 504 (timeout) error code and will not see the response from the RP.
 
