@@ -110,6 +110,7 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
 | **billingproperties.workloadType**| String. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
 | **additionalproperties.resourceProviderProperties**| Required. Object identifying additional Resource Provider properties. |
 | **resourceProviderProperties.resourceProviderNamespace**| Required. Resource Provider Namespace e.g.: Microsoft.Contonso. |
+| **test|
 
 ### Response
 
