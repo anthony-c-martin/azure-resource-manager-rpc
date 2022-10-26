@@ -86,18 +86,31 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
 
 ```json
 {
-	"additionalProperties": {
-		"billingProperties": {
-			"costCategory": "FR | FG | FS | FX | FB | None",
-			"channelType": "Internal | FieldLed | CustomerLed | PartnerLed | None",
-			"billingType": "Legacy| Modern",
-			"paymentType": "Paid |Free| Entitlement| SponsoredPlus | Sponsored | Benefit | None",
-			"workloadType": "Production | DevTest | None"
-		},
-		"resourceProviderProperties": {
-			"resourceProviderNamespace": "<Provider Namespace>"
-		}
-	}
+    "properties": {
+        "additionalProperties": {
+            "billingProperties": {
+                "costCategory": "FR | FG | FS | FX | FB | None",
+                "channelType": "Internal | FieldLed | CustomerLed | PartnerLed | None",
+                "billingType": "Legacy| Modern",
+                "paymentType": "Paid |Free| Entitlement| SponsoredPlus | Sponsored | Benefit | None",
+                "workloadType": "Production | DevTest | None",
+                
+                "additionalStateInformation": {
+                    "releaseNonDataRetentionResource": {
+                    "value": "True | False", 
+                     "effectiveDate": "DateTime" 
+                },
+                    "blockNewResourceCreation": {
+                     "value": "True | False", 
+                     "effectiveDate": "DateTime" 
+                }
+            }
+            }
+            "resourceProviderProperties": {
+                "resourceProviderNamespace": "<Provider Namespace>"
+            }
+        }
+    }
 }
 ```
 | **Element name** | Description |
@@ -108,9 +121,14 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
 | **billingproperties.billingType**| String. Indicates the commerce stack that this account is on - modern or legacy |
 | **billingproperties.paymentType**| String. Differentiates how customer is paying for the subscription. This can change if customer changes from free to paid, etc.|
 | **billingproperties.workloadType**| String. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
+| **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with teh subscription |
+| **billingproperties.releaseNonDataRetentionResource.value**| Boolean, When true, indicates that the Non data retention resources can be released |
+| **billingproperties.releaseNonDataRetentionResource.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
+| **billingproperties.blockNewResourceCreation.value**| Boolean, When true, indicates that new resource cretaion should be blocked. Existing resources should not be impacted |
+| **billingproperties.blockNewResourceCreation.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
 | **additionalproperties.resourceProviderProperties**| Required. Object identifying additional Resource Provider properties. |
 | **resourceProviderProperties.resourceProviderNamespace**| Required. Resource Provider Namespace e.g.: Microsoft.Contonso. |
-| **test|
+
 
 ### Response
 
