@@ -121,7 +121,7 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
 | **billingproperties.billingType**| String. Indicates the commerce stack that this account is on - modern or legacy |
 | **billingproperties.paymentType**| String. Differentiates how customer is paying for the subscription. This can change if customer changes from free to paid, etc.|
 | **billingproperties.workloadType**| String. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
-| **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with teh subscription |
+| **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with the subscription |
 | **billingproperties.releaseNonDataRetentionResource.value**| Boolean, When true, indicates that the Non data retention resources can be released |
 | **billingproperties.releaseNonDataRetentionResource.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
 | **billingproperties.blockNewResourceCreation.value**| Boolean, When true, indicates that new resource cretaion should be blocked. Existing resources should not be impacted |
