@@ -97,11 +97,11 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
                 
                 "additionalStateInformation": {
                     "releaseNonDataRetentionResource": {
-                    "value": "True | False", 
+                    "value": True | False, 
                      "effectiveDate": "DateTime" 
                 },
                     "blockNewResourceCreation": {
-                     "value": "True | False", 
+                     "value": True | False, 
                      "effectiveDate": "DateTime" 
                 }
             }
