@@ -98,7 +98,7 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
                 "additionalStateInformation": {
                     "releaseNonDataRetentionResource": {
                     "value": True | False, 
-                     "effectiveDate": "DateTime" 
+                    "effectiveDate": "DateTime" 
                 },
                     "blockNewResourceCreation": {
                      "value": True | False, 
@@ -121,10 +121,10 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
 | **billingproperties.billingType**| String. Indicates the commerce stack that this account is on - modern or legacy |
 | **billingproperties.paymentType**| String. Differentiates how customer is paying for the subscription. This can change if customer changes from free to paid, etc.|
 | **billingproperties.workloadType**| String. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
-| **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with the subscription |
-| **billingproperties.releaseNonDataRetentionResource.value**| Boolean, When true, indicates that the Non data retention resources can be released.  This is a high confidence signal that would be set to true when the subscription is already in disabled state. To learn about Azure Data Retention policy after subscription has been disabled visit https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/cancel-azure-subscription#what-happens-after-subscription-cancellation. |
+| **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with the subscription. |
+| **billingproperties.releaseNonDataRetentionResource.value**| Boolean, When true, indicates that the Non data retention resources can be released. This is a high confidence signal that would be set to true when the subscription is already in disabled state. To learn about Azure Data Retention policy after subscription has been disabled visit https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/cancel-azure-subscription#what-happens-after-subscription-cancellation. |
 | **billingproperties.releaseNonDataRetentionResource.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
-| **billingproperties.blockNewResourceCreation.value**| Boolean, When true, indicates that new resource creation should be blocked. Existing resources should functionality should not be impacted. This signal should be looked at when subscription state is Active. The service should be able to recover if the flag is reset to false. |
+| **billingproperties.blockNewResourceCreation.value**| Boolean, When true, indicates that new resource creation should be blocked. Existing resources functionality should not be impacted. This signal should be looked at when subscription state is Active. The service should be able to recover if the flag is reset to false. |
 | **billingproperties.blockNewResourceCreation.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
 | **additionalproperties.resourceProviderProperties**| Required. Object identifying additional Resource Provider properties. |
 | **resourceProviderProperties.resourceProviderNamespace**| Required. Resource Provider Namespace e.g.: Microsoft.Contonso. |
