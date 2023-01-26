@@ -66,7 +66,7 @@ The resource provider must respond within that time interval or the client will 
 
 ## Request Throttling ##
 
-ARM provides subscription level throttling. More details on these limits can be found [here] (https://azure.microsoft.com/en-us/documentation/articles/azure-subscription-service-limits/#overview)
+ARM provides subscription level throttling. More details on these limits can be found [here](https://azure.microsoft.com/en-us/documentation/articles/azure-subscription-service-limits/#overview).
 
 ## Common API Response Details ###
 
