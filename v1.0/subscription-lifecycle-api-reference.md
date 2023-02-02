@@ -133,7 +133,7 @@ If a 200, the response body will contain the original request that was PUT per t
 
 ### Subscription States
 
-**Allowed Actions when 'Warned' or 'Disabled'**
+**Allowed Actions when 'Warned' or 'Suspended'**
 
 When configured correctly inside a given RP manifest, ARM will handle filtering actions (example: not allowing PUT/POST/PATCH) and returning a 409 when a given action is not allowed for a current state. This filtering does not need to be managed directly by the RP.
 
