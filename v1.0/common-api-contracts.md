@@ -316,3 +316,9 @@ Singleton resources must still expose a collection GET and individual GET on the
   }
 }
 ```
+
+### PUT/PATCH/DELETE APIs ###
+
+Singleton resources may support PUT, PATCH, and DELETE operations on the singleton resource if the resource is not readonly. These operations should be exposed on the singleton resource instance.
+
+**URI**: `PUT /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/default`
