@@ -7,6 +7,7 @@
 - [ProvisioningState property](#provisioningstate-property)
 - [202 Accepted and Location Headers](#202-accepted-and-location-headers)
 - [Azure-AsyncOperation Resource format](#azure-asyncoperation-resource-format)
+- [Operation Result Rules](#operation-result-rules)
 - [Long running operations running more than a day](#long-running-operations-running-more-than-a-day)
 
 ## Asynchronous Operations
@@ -167,7 +168,17 @@ The operation resource format returned by the Azure-AsyncOperation header is as 
     /* RP must return the *code* and *messages* fields. Please use the schema for the "ErrorResponse" Type from the Common Types definition in the Azure Rest API Specifications repository: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/common-types/resource-management/v3/types.json */
     "code": "BadArgument",
     "message": "The provided database 'foo' has an invalid username."
-  }
+  },
+  "operations": [
+    {
+      "name": "nestedOperation1",
+      "status": "Failed",
+      "error": {
+        "code": "InvalidSku",
+        "message": "The sku provided in the request was invalid."
+      }
+    }
+  ]
 }
 ```
 
@@ -191,6 +202,7 @@ If the response status code is a 4xx or 5xx value, it indicates a failure in rea
 | `startTime` | **Optional.**  DateLiteral using ISO8601, per 1API guidelines. |
 | `endTime` | **Optional.**  DateLiteral using ISO8601, per 1API guidelines. |
 | `percentComplete` | **Optional.**  Double between 0 and 100. |
+| `operations` | **Optional.** Nested operation statuses. Useful for batch operations that may need more fine-grained reporting. The objects within this array can use the full operation resource schema but should not contain a second level of nested operations. Omit this property if no nested operation statuses are present. |
 
 ## Operation result rules
 
