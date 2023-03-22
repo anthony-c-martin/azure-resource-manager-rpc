@@ -33,6 +33,7 @@ The resource provider proxy will preserve all the client requests headers, with 
 | x-ms-client-wids | Always added. Set to the wids of the client JWT. These identify the admins of the tenant which issued the JWT. | 1st party only |
 | x-ms-client-authentication-methods | Always added. Set to the authentication method references of client JWT. | 1st party only|
 | x-ms-management-group-ancestors | Always added. Set to the management groups that subscription might belong to. If there are multiple ancestors they will be comma separated. Example: `d27e3b8a-3d55-44b7-b2ba-1b3ef9227527, NonProduction` | 1st party only|
+| x-ms-arm-resource-routing-location | Added when extension resources or child proxy resources are routed regionally. Set to the endpoint location the request is routed to. The endpoint location will be decided by the location of the closest tracked ancestor. If there is no tracked ancestor, the header will not be set. If the request is routed to the global endpoint because there is no matching regional endpoint, it will be set to an empty string. | 1st and 3rd party |
 
 ## Client Request Headers ##
 
