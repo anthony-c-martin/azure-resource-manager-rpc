@@ -214,7 +214,7 @@ All resource providers would need to include the "{Resource Provider Namespace}/
 
 ### Check Name Availability Requests ###
 
-Many resource providers have resource name uniqueness requirements – usually requiring global or local uniqueness.  The following APIs provide a common pattern for verifying name availability.
+Many resource providers have resource name uniqueness requirements – usually defined as global (across regions of certain cloud) or local (within a region). The following APIs provide a common pattern for checking name availability.
 
 #### Request (for global uniqueness) ####
 
