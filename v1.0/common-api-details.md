@@ -87,7 +87,7 @@ All long running operations response details are described below.
 
 If the resource provider needs to return an error to any operation, it should return the appropriate HTTP error code and a message body as can be seen below. The message should be localized per the Accept-Language header specified in the original request such that it could be directly be exposed to users.
 
-The resource providers must return the \*code\* and \*message\* fields; and should also follow the recommended schema for the "ErrorResponse" Type from the Common Types definition in the Azure Rest API Specification [repository](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/common-types/resource-management/v2/types.json). This format is inherited from [Odata v4.0 schema](http://docs.oasis-open.org/odata/odata-json-format/v4.0/os/odata-json-format-v4.0-os.html#_Toc372793091) for error responses.
+The resource providers must return the `code` and `message` fields; and should also follow the recommended schema for the "ErrorResponse" Type from the Common Types definition in the Azure Rest API Specification [repository](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/common-types/resource-management/v2/types.json). This format is inherited from [Odata v4.0 schema](http://docs.oasis-open.org/odata/odata-json-format/v4.0/os/odata-json-format-v4.0-os.html#_Toc372793091) for error responses.
 
 **Response Body**
 ```
@@ -156,4 +156,4 @@ Chunked transfer encoding is supported and can be used for larger payloads.
 
 The Resource Provider may return a 307 response code to the customer if they want to expose a direct URL / host (with no proxy) to the user. As an example – when downloading a large file, the RP may return a 307 to a URL on storage to download that file.
 
-The Azure Resource Manager will \*not\* follow any redirects and will instead proxy them directly back to the client.
+The Azure Resource Manager will **not** follow any redirects and will instead proxy them directly back to the client.
