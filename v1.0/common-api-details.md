@@ -53,7 +53,7 @@ ARM will proxy request parameters (e.g. $filter; $expand; $skipToken; etc.) as-i
 
 ## Case Insensitivity for Requests ##
 
-When satisfying incoming requests, it is assumed that the following values are stored / indexed / compared in a case \*insensitive\* way:
+When satisfying incoming requests, it is assumed that the following values are stored / indexed / compared in a case **insensitive** way:
 
 - Resource group name
 - Resource name
