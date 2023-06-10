@@ -188,13 +188,13 @@ For resources that implement data encryption and allow the customer to specify t
 | infrastructureEncryption  | String enum with values of "enabled" and "disabled". It is preferred to make infrastructure or platform encryption mandatory, but if included this enables or disables infrastructure or platform encryption. |
 | customerManagedKeyEncryption.keyEncryptionKeyUrl  | Key vault uri to access the encryption key  |
 | customerManagedKeyEncryption.keyEncryptionKeyIdentity.identityType | String enum. Values are "userAssignedIdentity" or "systemAssignedIdentity"  |
-| customerManagedKeyEncryption.keyEncryptionKeyIdentity.userAssignedIdentity | The User Assigned resource id of the identity which will be used to access key vault  |
+| customerManagedKeyEncryption.keyEncryptionKeyIdentity.userAssignedIdentityResourceId | The User Assigned resource id of the identity which will be used to access key vault  |
 | customerManagedKeyEncryption.keyEncryptionKeyIdentity.federatedClientId | The federated application client id of the identity which will be used to access a key vault in another tenant  |
 
 On PUT/PATCH of a new key, the provider is expected to implement key rotation for the encrypted data. 
 
 Error cases:
--	identityType == "systemAssignedIdentity" and userAssignedIdentity != NULL
+-	identityType == "systemAssignedIdentity" and userAssignedIdentityResourceId != NULL
 -	infrastructureEncryption == enabled but keyEncryptionKeyUrl is set. Infrastructure encryption is needed to support CMK.
 
 ### State Change Table ###
@@ -221,7 +221,7 @@ The following sample ARM requests depict the expected state changes and service 
         "customerManagedKeyEncryption": {
             "keyEncryptionKeyIdentity": {
                 "identityType": "userAssignedIdentity",
-                "userAssignedIdentity": "UA resource id"
+                "userAssignedIdentityResourceId": "UA resource id"
             },
             "keyEncryptionKeyUrl": "https://contosovault.vault.azure.net/keys/contosokek"
         }
@@ -236,7 +236,7 @@ The following sample ARM requests depict the expected state changes and service 
         "customerManagedKeyEncryption": {
             "keyEncryptionKeyIdentity": {
                 "identityType": "userAssignedIdentity",
-                "userAssignedIdentity": "UA resource id",
+                "userAssignedIdentityResourceId": "UA resource id",
                 "federatedClientId": "Federated application id"
             },
             "keyEncryptionKeyUrl": "https://contosovault.vault.azure.net/keys/contosokek"
@@ -252,7 +252,7 @@ The following sample ARM requests depict the expected state changes and service 
         "customerManagedKeyEncryption": {
             "keyEncryptionKeyIdentity": {
                 "identityType": "userAssignedIdentity",
-                "userAssignedIdentity": "UA resource id"
+                "userAssignedIdentityResourceId": "UA resource id"
             }
         }
     }
@@ -266,7 +266,7 @@ The following sample ARM requests depict the expected state changes and service 
         "customerManagedKeyEncryption": {
             "keyEncryptionKeyIdentity": {
                 "identityType": "systemAssignedIdentity",
-                "userAssignedIdentity": null
+                "userAssignedIdentityResourceId": null
             }
         }
     }
