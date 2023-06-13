@@ -94,7 +94,11 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
                 "billingType": "Legacy| Modern",
                 "paymentType": "Paid |Free| Entitlement| SponsoredPlus | Sponsored | Benefit | None",
                 "workloadType": "Production | DevTest | None",
-                
+                "tier": "Standard | Premier | Individual | Unknown ",
+                "billingAccount": {
+                    "id": "/providers/Microsoft.Billing/billingAccounts/54731783"
+                },
+
                 "additionalStateInformation": {
                     "releaseNonDataRetentionResource": {
                     "value": True | False, 
@@ -121,6 +125,9 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
 | **billingproperties.billingType**| String. Indicates the commerce stack that this account is on - modern or legacy |
 | **billingproperties.paymentType**| String. Differentiates how customer is paying for the subscription. This can change if customer changes from free to paid, etc.|
 | **billingproperties.workloadType**| String. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
+| **billingproperties.tier**| String. The tier to which the billign account belongs. An enterprise customer would be premier tier. |
+| **billingproperties.billingAccount**| Object. Billing account of the customer that holds customer payment instrument, address etc. The subscription is always linked to a billing account. |
+| **billingproperties.billingAccount.Id**| String. Unique Id identifying the commerce object for the billing account. |
 | **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with the subscription. |
 | **billingproperties.releaseNonDataRetentionResource.value**| Boolean, When true, indicates that the Non data retention resources can be released. This is a high confidence signal that would be set to true when the subscription is already in disabled state. To learn about Azure Data Retention policy after subscription has been disabled see [What happens after subscription cancellation?](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/cancel-azure-subscription#what-happens-after-subscription-cancellation). |
 | **billingproperties.releaseNonDataRetentionResource.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
