@@ -144,9 +144,9 @@ Any request with a body larger than 4 MB will not be sent to the resource provid
 
 ### Max Response Size ###
 
-In all the calls that ARM makes to the resource provider, the maximum size of a response that ARM will accept from the resource providers is 8 MB.
+In all the calls that ARM makes to the resource provider, the maximum size of a response that ARM will accept from the resource providers is 8 MB **after compression**. Any response greater than 8 MB in size should use pagination instead.
 
-Any response greater than 8 MB in size will be dropped by ARM, and **500 Internal Server Error** will be returned to the client.  In general, APIs exposed by the resource provider should be designed to transmit relatively little data in keeping with the management nature of the API.
+In addition, ARM cannot support any single resource response that exceeds 20MB in size, which is the hard limit currently set. When this happens, the payload will be dropped and a **502 Bad Gateway** error will be returned to the client. In general, APIs exposed by the resource provider should be designed to transmit relatively little data in keeping with the management nature of the API.
 
 ### Transfer-Encoding ###
 
