@@ -49,7 +49,12 @@ Any non-reserved headers provided by the client will pass as-is to the resource 
 
 ## Request Query Parameters ##
 
-ARM will proxy request parameters (e.g. $filter; $expand; $skipToken; etc.) as-is to the Resource Providers. It will not delete, modify or add any query parameters before relaying the request.
+ARM will proxy request parameters (e.g. $filter; $expand; $skipToken; etc.) as-is to the Resource Providers. It will not delete, modify or add any query parameters before relaying the request. The only exceptions are the following query parameters which are not supported on requests into ARM and will cause the request to be rejected with a 400 status code:
+
+- `sub`
+- `subId`
+- `subscription`
+- `subscriptionId`
 
 ## Case Insensitivity for Requests ##
 
