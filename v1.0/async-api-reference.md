@@ -110,7 +110,7 @@ The asynchronous operation APIs frequently use the 202 Accepted status code and 
 1. Return HTTP code 202 (Accepted) with a Location header and, optionally, a Retry-After header.
     - The 202 Accepted should return no response body.
     - The URI in the location header should be a full absolute URI and a public facing URI.
-    - The URI host must be the same as the host in the referrer header.
+    - The URI host must be the same as the host in the `referer` header.
     - The time interval in the Retry-After header can only be specified in seconds, with a minimum of 10 seconds and a maximum of 10 minutes.
 2. Clients invoke the URI specified in the Location header using the GET verb.
 3. Clients should wait for the Retry-After interval, if it was specified, or the default of 60 seconds if it was not, before polling again.
