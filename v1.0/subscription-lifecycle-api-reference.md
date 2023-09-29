@@ -8,7 +8,7 @@
 
 Creates or updates a subscription for this particular resource provider. It includes changes in the state of the subscription which may trigger other actions (setup or teardown).
 
-**Note**: Some of the fields in this request may contain PII (i.e. `subscriptionAccountOwner`). The request body should not be logged.
+**Note**: Some of the fields in this request may contain PII (i.e. `accountOwner.email`). The request body should not be logged.
 
 This API uses the &quot;system&quot; version of 2.0 because it can be triggered by commerce and not necessarily by a user request.
 
@@ -52,8 +52,11 @@ This API uses the &quot;system&quot; version of 2.0 because it can be triggered 
 				}
 			]
 		},
-		"subscriptionSpendingLimit": "True",
-		"subscriptionAccountOwner": "account@company.com",
+		"spendingLimit": "On",
+		"accountOwner": {
+			"puid": "12445122",
+			"email": "account@company.com"
+		},
 		"managedByTenants": [
 			{
 				"tenantId": "<managedByTenantId>"
@@ -77,8 +80,8 @@ This API uses the &quot;system&quot; version of 2.0 because it can be triggered 
 | **properties.quotaId** | Optional.The quota requirement for the subscription based on the offer type / category (e.g. free vs. pay-as-you-go). This can be used to inform quota information for the subscription (e.g. max # of resource groups or max # of virtual machines. |
 | **properties.registeredFeatures** | Optional.All AFEC features that the subscriptions has been registered under RP namespace and platform namespace (Microsoft.Resources).  Null or an empty array would mean that there are no registered features for the given subscription. |
 | **properties.availabilityZones** | Optional.Physical to logical zone mapping. This mapping will be per location (region). |
-| **properties.subscriptionSpendingLimit** | Boolean for subscription spending limit. |
-| **Properties.subscriptionAccountOwner** | String for Account owner. |
+| **properties.spendingLimit** | Whether the subscription has a spending limit ("On", "Off", or "CurrentPeriodOff"). |
+| **Properties.accountOwner** | Identity information for the subscription's account owner. |
 | **properties.managedByTenants** | Optional.All tenants managing the subscription. Null or empty means that there are no managing tenants. |
 | **properties.additionalProperties** | Required. AdditionalProperty bag, which is a dictionary of JTokens. More details can be found below. |
 
