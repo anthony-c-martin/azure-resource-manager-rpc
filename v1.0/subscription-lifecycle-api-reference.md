@@ -8,6 +8,8 @@
 
 Creates or updates a subscription for this particular resource provider. It includes changes in the state of the subscription which may trigger other actions (setup or teardown).
 
+**Note**: Some of the fields in this request may contain PII (i.e. `subscriptionAccountOwner`). The request body should not be logged.
+
 This API uses the &quot;system&quot; version of 2.0 because it can be triggered by commerce and not necessarily by a user request.
 
 ### Request
