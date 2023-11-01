@@ -74,7 +74,7 @@ The resource provider must respond within that time interval or the client will 
 
 ARM provides subscription level throttling. More details on these limits can be found [here](https://azure.microsoft.com/en-us/documentation/articles/azure-subscription-service-limits/#overview).
 
-## Common API Response Details ###
+## Common API Response Details ##
 
 ### Response Headers ###
 
@@ -82,9 +82,10 @@ All responses from resource providers should include the following headers:
 
 | Header | Description |
 | --- | --- |
-| Content-Type | Set to application/json. This header is not required in responses that don&#39;t have any content. |
-| Date | The date that the request was processed, in RFC 1123 format. |
-| x-ms-request-id | A unique identifier for the current operation, service generated.All the resource providers \*must\* return this value in the response headers to facilitate debugging. |
+| `Content-Type` | Set to application/json. This header is not required in responses that don&#39;t have any content. |
+| `Date` | The date that the request was processed, in RFC 1123 format. |
+| `x-ms-request-id` | A unique identifier for the current operation, service generated. All the resource providers \*must\* return this value in the response headers to facilitate debugging. |
+| `x-ms-failurecause` | An ___optional___ header used to provide additional failure attribution on error responses. See [below](#x-ms-failurecause-header) for additional information. |
 
 All long running operations response details are described below.
 
@@ -92,10 +93,10 @@ All long running operations response details are described below.
 
 If the resource provider needs to return an error to any operation, it should return the appropriate HTTP error code and a message body as can be seen below. The message should be localized per the Accept-Language header specified in the original request such that it could be directly be exposed to users.
 
-The resource providers must return the `code` and `message` fields; and should also follow the recommended schema for the "ErrorResponse" Type from the Common Types definition in the Azure Rest API Specification [repository](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/common-types/resource-management/v2/types.json). This format is inherited from [Odata v4.0 schema](http://docs.oasis-open.org/odata/odata-json-format/v4.0/os/odata-json-format-v4.0-os.html#_Toc372793091) for error responses.
+The resource providers must return the `code` and `message` fields; and should also follow the recommended schema for the "ErrorResponse" Type from the Common Types definition in the Azure Rest API Specification [repository](https://github.com/Azure/azure-rest-api-specs/blob/master/specification/common-types/resource-management/v2/types.json). This format is inherited from [OData v4.0 schema](http://docs.oasis-open.org/odata/odata-json-format/v4.0/os/odata-json-format-v4.0-os.html#_Toc372793091) for error responses.
 
 **Response Body**
-```
+```json
 {
   "error": {
     "code": "",
@@ -134,12 +135,55 @@ The resource providers must return the `code` and `message` fields; and should a
 ```
 | Element name | Type | Description |
 | --- | --- | --- |
-| message | string (required) | Describes the error in detail and provides debugging information. If Accept-Language is set in the request, it must be localized to that language. |
-| code | string (required) | Unlocalized string which can be used to programmatically identify the error. The code should be Pascal-cased, and should serve to uniquely identify a particular class of error, for example &quot;BadArgument&quot;. |
-| target | string (optional) | The target of the particular error (for example, the name of the property in error). |
-| details | array (optional) | An array of additional nested error response info objects, as described by this contract. |
-| additionalInfo | array (optional) | An array of objects with "type" (string), and "info" (object) properties. The schema of "info" is service-specific and dependent on the "type" string. |
+| `message` | string (required) | Describes the error in detail and provides debugging information. If Accept-Language is set in the request, it must be localized to that language. |
+| `code` | string (required) | Unlocalized string which can be used to programmatically identify the error. The code should be Pascal-cased, and should serve to uniquely identify a particular class of error, for example &quot;BadArgument&quot;. |
+| `target` | string (optional) | The target of the particular error (for example, the name of the property in error). |
+| `details` | array (optional) | An array of additional nested error response info objects, as described by this contract. |
+| `additionalInfo` | array (optional) | An array of objects with "type" (string), and "info" (object) properties. The schema of "info" is service-specific and dependent on the "type" string. |
 
+
+### `x-ms-failurecause` header
+Resource Providers may include the `x-ms-failurecause` HTTP header in their responses as a means of providing contextualized
+failure attribution for internal telemetry and monitoring purposes. This capability is opt-in and is supported on all request
+types (including both `Location` and `Azure-AsyncOperation` asynchronous operation protocols).
+
+> The purpose of this header is to address scenarios which result in HTTP 5xx (Server Failure) or async operation failures as a
+> consequence of the customer's input rather than a problem with the Resource Provider in question. In general, the expectation
+> is that customer induced failures are reported with HTTP 4xx failures codes and that async operations are rejected during the
+> validation phase, however the `x-ms-failurecause` header provides a backstop solution where it is not technically feasible to
+> align with this guidance.
+
+The `x-ms-failurecause` header is expected to be provided in the HTTP response headers sent by a Resource Provider in response
+to a request made by ARM. It is expected to appear as follows:
+
+```http
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json
+Date: Thu, 01 Dec 2023 16:00:00 GMT
+x-ms-request-id: 00000000-0000-0000-0000-00000000000
+x-ms-failurecause: <responsibleParty>:<failureCategory>
+
+{ "error": { "code": "...", "message": "..." } }
+```
+
+The value of the `x-ms-failurecause` header is a tuple consisting of the `responsibleParty` and the (optional) `failureCategory`.
+This is string encoded using a single colon (`:`) delimiter between components, resulting in values like `client`, `service`, 
+`client:nic-in-use`, `service:rnm`. *Note that if the `failureCategory` is not provided, the delimiter is omitted.*
+
+The `responsibleParty` component MUST be one of `client` (caused by the customer) or `service` (caused by the Resource Provider).
+The value of `responsibleParty` is used to determine whether a given failure contributes towards the Resource Provider's error
+rate, with `client` failures being excluded from service-level success rate calculations. **If no value is provided, or an unrecognized `responsibleParty` is specified, this will be set to `service`.**
+
+In addition to specifying the `responsibleParty`, Resource Providers may optionally provide a `failureCategory` value. This
+value is exposed in reporting to enable service teams to classify their failure modes and provide improved visibility into
+this within their centralized SLI telemetry. **The values used for the `failureCategory` field SHOULD be low cardinality and 
+should not exceed 100-characters in length.**
+
+> As a practical example, the Microsoft.Storage resource provider offers a proxy API for accessing storage account contents.
+> This API is required to exactly match the semantics of the underlying storage account APIs, and this includes using *HTTP 503
+> Service Unavailable* to represent client rate limiting. By setting the `x-ms-failurecause` header to `client:rate-limiting`
+> it is possible for Microsoft.Storage to remove a significant source of signal error in their centralized SLIs and improve the
+> accuracy of their integrated monitoring and reporting.
 
 ### Max Request Body Size ###
 

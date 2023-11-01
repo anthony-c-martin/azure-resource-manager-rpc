@@ -16,11 +16,12 @@ Some REST operations can take a long time to complete. Although REST is not supp
 
 **Please note:**
 
-    * Retry-After should be (integer), will not support http-date.
-    * Location header should be absolute URI (partial URI is not supported). 
-    * Azure-AsyncOperation header should be absolute URI (partial URI is not supported).
-    * Location URI should return 202 Accepted with no response body while operation is in progress.
-    * Azure-AsyncOperation URI returns 200 and status of the operation is present in the response payload. The response should match the RPC contract.
+  * Retry-After should be (integer), will not support http-date.
+  * Location header should be absolute URI (partial URI is not supported). 
+  * Azure-AsyncOperation header should be absolute URI (partial URI is not supported).
+  * Location URI should return 202 Accepted with no response body while operation is in progress.
+  * Azure-AsyncOperation URI returns 200 and status of the operation is present in the response payload. The response should match the RPC contract.
+  * The [`x-ms-failurecause` header](./common-api-details.md#x-ms-failurecause-header) may be used to indicate that an async operation failed as a result of invalid input provided by the customer, or to provide additional context for reporting purposes.
 
 ## Creating or Updating Resources Asynchronously
 
@@ -148,9 +149,10 @@ Location URI under subscription scope is preferred. If operationResults is expos
 | GET /…/subscriptions/sub1/providers/Microsoft.Test/operationResults/id1 |     |
 |   | 204 NOCONTENT |
 
+
 ## Azure-AsyncOperation Resource format
 
-The operation resource format returned by the Azure-AsyncOperation header is as follows-
+The operation resource format returned by the Azure-AsyncOperation header is as follows:
 
 ```json
 {
