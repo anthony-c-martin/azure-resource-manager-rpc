@@ -66,6 +66,8 @@ In a concrete form:
 1. westus.cache.api.azure.com, eastus.cache.api.azure.com
 2. westus.redis.cache.api.azure.com
 
+If a Resource Provider is creating resources on behalf of a customer the resource location should match the location of the resource group. This will co-locate the resource data in the RP and the resource metadata in ARM within the same region thus reducing the exposure to regional failures.
+
 ## Nested Resources ##
 
 The RPC supports registering "nested" resource types for an RP with this format:
