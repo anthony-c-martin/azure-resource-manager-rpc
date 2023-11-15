@@ -75,19 +75,19 @@ This API uses the &quot;system&quot; version of 2.0 because it can be triggered 
 | **state** | Required.One of &quot;Registered&quot;, &quot;Unregistered&quot;, &quot;Warned&quot;, &quot;Suspended&quot; , or &quot;Deleted&quot;; used to indicate the current state of the subscription. The resource provider should always take the latest state. Transition among any states is valid (for example - it is possible to receive Suspended / Warned before Registered). Details on these states could be found below. |
 |**registrationDate**| Required. Date the subscription was registered. |
 | **properties** | Required.Property bag contains other name/value pairs that can be used for telemetry and logging. The resource provider should handle unexpected property key/value pairs without issue, as we will introduce new metadata without updating the contract version. The value inside the properties envelope may be a complex type / object / token itself. |
-| **properties.tenantId** | Optional.The AAD directory/tenant to which the subscription belongs. |
-| **properties.locationPlacementId** | Optional.The placement requirement for the subscription based on its country of origin / offer type / offer category / etc. This is used in geo-fencing of certain regions or regulatory boundaries (e.g. Australia ring-fencing). |
-| **properties.quotaId** | Optional.The quota requirement for the subscription based on the offer type / category (e.g. free vs. pay-as-you-go). This can be used to inform quota information for the subscription (e.g. max # of resource groups or max # of virtual machines. |
-| **properties.registeredFeatures** | Optional.All AFEC features that the subscriptions has been registered under RP namespace and platform namespace (Microsoft.Resources).  Null or an empty array would mean that there are no registered features for the given subscription. |
-| **properties.availabilityZones** | Optional.Physical to logical zone mapping. This mapping will be per location (region). |
-| **properties.spendingLimit** | Whether the subscription has a spending limit ("On", "Off", or "CurrentPeriodOff"). |
-| **Properties.accountOwner** | Identity information for the subscription's account owner. |
-| **properties.managedByTenants** | Optional.All tenants managing the subscription. Null or empty means that there are no managing tenants. |
+| **properties.tenantId** | Optional. The AAD directory/tenant to which the subscription belongs. |
+| **properties.locationPlacementId** | Optional. The placement requirement for the subscription based on its country of origin / offer type / offer category / etc. This is used in geo-fencing of certain regions or regulatory boundaries (e.g. Australia ring-fencing). |
+| **properties.quotaId** | Optional. The quota requirement for the subscription based on the offer type / category (e.g. free vs. pay-as-you-go). This can be used to inform quota information for the subscription (e.g. max # of resource groups or max # of virtual machines). |
+| **properties.registeredFeatures** | Optional. All AFEC features that the subscriptions has been registered under RP namespace and platform namespace (Microsoft.Resources).  Null or an empty array would mean that there are no registered features for the given subscription. |
+| **properties.availabilityZones** | Optional. Physical to logical zone mapping. This mapping will be per location (region). |
+| **properties.spendingLimit** | Optional. Whether the subscription has a spending limit ("On", "Off", or "CurrentPeriodOff"). |
+| **Properties.accountOwner** | Optional. Identity information for the subscription's account owner. |
+| **properties.managedByTenants** | Optional. All tenants managing the subscription. Null or empty means that there are no managing tenants. |
 | **properties.additionalProperties** | Required. AdditionalProperty bag, which is a dictionary of JTokens. More details can be found below. |
 
-
 #### AdditionalProperties
-Additional Properties property would be a dictionary of JTokens. Please note that in the future the dictionary may be appended with additional JTokens. Also, the JTokens may also be modified to have additional data . Resource Providers should develop code that can handle modifications, and should not strongly parse this dictionary. 
+
+Additional Properties property would be a dictionary of JTokens. Please note that in the future the dictionary may be appended with additional JTokens. Also, the JTokens may also be modified to have additional data. Resource Providers should develop code that can handle modifications, and should not strongly parse this dictionary.
 
 ```json
 {
@@ -103,18 +103,17 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
                 "billingAccount": {
                     "id": "/providers/Microsoft.Billing/billingAccounts/54731783"
                 },
-
                 "additionalStateInformation": {
                     "releaseNonDataRetentionResource": {
-                    "value": True | False, 
-                    "effectiveDate": "DateTime" 
-                },
+                        "value": true | false,
+                        "effectiveDate": "DateTime"
+                    },
                     "blockNewResourceCreation": {
-                     "value": True | False, 
-                     "effectiveDate": "DateTime" 
+                        "value": true | false,
+                        "effectiveDate": "DateTime"
+                    }
                 }
-            }
-            }
+            },
             "resourceProviderProperties": {
                 "resourceProviderNamespace": "<Provider Namespace>"
             }
@@ -122,24 +121,25 @@ Additional Properties property would be a dictionary of JTokens. Please note tha
     }
 }
 ```
+
 | **Element name** | Description |
 | --- | --- |
-| **additionalproperties.billingproperties**| Commerce object identifying billing properties associated with the subscription |
-| **billingproperties.costCategory**| String. Cost categorizations used for internal subscriptions. |
-| **billingproperties.channelType**| String. Indicates the sales motion that this subscription type belongs to. This can be changed if a subscription moves from one channel type to another (e.g., CustomerLed to PartnerLed)  |
-| **billingproperties.billingType**| String. Indicates the commerce stack that this account is on - modern or legacy |
-| **billingproperties.paymentType**| String. Differentiates how customer is paying for the subscription. This can change if customer changes from free to paid, etc.|
-| **billingproperties.workloadType**| String. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
-| **billingproperties.tier**| String. Customer segment |
-| **billingproperties.billingAccount**| Object. Billing account of the customer that holds customer payment instrument, address etc. The subscription is always linked to a billing account. |
-| **billingproperties.billingAccount.Id**| String. Unique Id identifying the commerce object for the billing account. |
-| **billingproperties.additionalStateInformation**| Commerce object identifying additional state information associated with the subscription. |
-| **billingproperties.releaseNonDataRetentionResource.value**| Boolean, When true, indicates that the Non data retention resources can be released. This is a high confidence signal that would be set to true when the subscription is already in disabled state. To learn about Azure Data Retention policy after subscription has been disabled see [What happens after subscription cancellation?](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/cancel-azure-subscription#what-happens-after-subscription-cancellation). |
-| **billingproperties.releaseNonDataRetentionResource.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
-| **billingproperties.blockNewResourceCreation.value**| Boolean, When true, indicates that new resource creation should be blocked. Existing resources functionality should not be impacted. This signal should be looked at when subscription state is Active. The service should be able to recover if the flag is reset to false. |
-| **billingproperties.blockNewResourceCreation.effectiveDate**| DateTime, Indicates the time when the above property got set as true |
-| **additionalproperties.resourceProviderProperties**| Required. Object identifying additional Resource Provider properties. |
-| **resourceProviderProperties.resourceProviderNamespace**| Required. Resource Provider Namespace e.g.: Microsoft.Contonso. |
+| **additionalProperties.billingProperties**| Optional. Commerce object identifying billing properties associated with the subscription |
+| **billingProperties.costCategory**| Optional string. A two-character code associated with the cost category for internal subscriptions. FX = Cost of Goods Sold (COGS), for services that directly or indirectly support commercial services offered to paying customers. FR = Research & Development, for services under development, test, staging, flighting, or pre-production. FS = Sales & Marketing, for services used for customer POCs, demos, or sponsored accounts. FG = General & Administrative, for services used internal to Microsoft such as HRWeb, MSW, Payroll, MyOrder, etc. FB = Broadreach. |
+| **billingProperties.channelType**| Optional string. Indicates the sales motion that this subscription type belongs to. This can be changed if a subscription moves from one channel type to another (e.g., CustomerLed to PartnerLed)  |
+| **billingProperties.billingType**| Optional string. Indicates the commerce stack that this account is on - modern or legacy |
+| **billingProperties.paymentType**| Optional string. Differentiates how customer is paying for the subscription. This can change if customer changes from free to paid, etc.|
+| **billingProperties.workloadType**| Optional string. Indicates the importance of this subscription. DevTest subscriptions get lower SLA compared to Production ones. This property can be changed later if needed as well. |
+| **billingProperties.tier**| Optional string. Customer segment |
+| **billingProperties.billingAccount**| Optional object. Billing account of the customer that holds customer payment instrument, address etc. The subscription is always linked to a billing account. |
+| **billingProperties.billingAccount.Id**| Optional string. Unique Id identifying the commerce object for the billing account. |
+| **billingProperties.additionalStateInformation**| Optional. Commerce object identifying additional state information associated with the subscription. |
+| **additionalStateInformation.releaseNonDataRetentionResource.value**| Optional boolean. When true, indicates that the Non data retention resources can be released. This is a high confidence signal that would be set to true when the subscription is already in disabled state. To learn about Azure Data Retention policy after subscription has been disabled see [What happens after subscription cancellation?](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/cancel-azure-subscription#what-happens-after-subscription-cancellation). |
+| **additionalStateInformation.releaseNonDataRetentionResource.effectiveDate**| Optional DateTime, Indicates the time when the above property got set as true |
+| **additionalStateInformation.blockNewResourceCreation.value**| Optional Boolean, When true, indicates that new resource creation should be blocked. Existing resources functionality should not be impacted. This signal should be looked at when subscription state is Active. The service should be able to recover if the flag is reset to false. |
+| **additionalStateInformation.blockNewResourceCreation.effectiveDate**| Optional DateTime, Indicates the time when the above property got set as true |
+| **additionalProperties.resourceProviderProperties**| Required. Object identifying additional Resource Provider properties. |
+| **resourceProviderProperties.resourceProviderNamespace**| Required. Resource Provider Namespace e.g.: Microsoft.Contoso. |
 
 
 ### Response
